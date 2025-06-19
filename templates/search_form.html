@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>搜索页面</title>
+	<style>
+				body {
+
+			background-color: var(--white);
+             /* 添加背景图片 */
+            background-image: url("https://th.bing.com/th/id/R.fd57e1f9c5bd20216397ca9a6e75391a?rik=YYCjWHrhSSCGsg&riu=http%3a%2f%2fimg.mp.itc.cn%2fupload%2f20160704%2f43f8117798624d9ca3b5e2ec66c417eb_th.jpg&ehk=LsDcAFlCLwExDq3kmcUhF%2bCtT%2f%2brnHlFbxdQq7p66Uw%3d&risl=1&pid=ImgRaw&r=0");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			line-height: 1.5;
+			margin: 0;
+			padding: 0;
+
+
+
+		}
+        #my-title {
+            padding: 10px;
+            text-align: center;
+			background-color: #007d65;
+			color: #FFFFFF;
+			border: none;
+			border-radius: 4px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+			cursor: pointer;
+			transition: background-color 0.2s ease-in-out;
+            }
+		.container {
+			max-width: 1200px;
+            height: 600px;
+			margin: auto;
+			padding: 20px;
+			box-sizing: border-box;
+			background-color: #FFFFFF;
+			border-radius: 8px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            {#居中#}
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            right: 20%;
+            transform: translate(0%, -50%);
+		}
+        .an {
+			max-width: 800px;
+            height: 500px;
+			margin: 0 auto;
+			padding: 20px;
+			box-sizing: border-box;
+			background-color: #FFFFFF;
+			border-radius: 8px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+		h1 {
+			font-size: 32px;
+			margin-bottom: 20px;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			margin-bottom: 20px;
+		}
+
+		input[type="text"] {
+			padding: 10px;
+			margin-bottom: 10px;
+			border: none;
+			border-radius: 4px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		input[type="submit"] {
+			padding: 10px;
+			background-color: #007d65;
+			color: #FFFFFF;
+			border: none;
+			border-radius: 4px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+			cursor: pointer;
+			transition: background-color 0.2s ease-in-out;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #001F3F;
+		}
+
+		.result {
+			padding: 20px;
+			background-color: #F5F5F5;
+			border-radius: 4px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+			white-space: pre-line;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<h1 id="my-title">demo</h1>
+	<form>
+		<input type="text" id="query" name="query" placeholder="Search..." onkeyup="suggest()">
+		<input type="button" value="问一下" onclick="search()" id="my-title">
+	</form>
+	<div id="answer"></div>
+	<div id="suggestions"></div>
+</div>
+
+<script>
+	function suggest() {
+		var query = document.getElementById("query").value;
+
+		// 向后端发送请求获取联想结果
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (xhr.status === 200) {
+					var suggestions = JSON.parse(xhr.responseText);
+					displaySuggestions(suggestions);
+				} else {
+					console.error("请求错误");
+				}
+			}
+		};
+		xhr.open("GET", "/api/suggestions?query=" + encodeURIComponent(query));
+		xhr.send();
+	}
+
+	function displaySuggestions(suggestions) {
+		var suggestionsContainer = document.getElementById("suggestions");
+		suggestionsContainer.innerHTML = "";
+
+		// 在页面上显示联想结果
+		suggestions.forEach(function(suggestion) {
+			var suggestionElement = document.createElement("div");
+			suggestionElement.textContent = suggestion;
+			suggestionElement.addEventListener("click", function() {
+				document.getElementById("query").value = suggestion;
+				suggestionsContainer.innerHTML = "";
+			});
+			suggestionsContainer.appendChild(suggestionElement);
+		});
+	}
+
+	function search() {
+		var query = document.getElementById("query").value;
+		// 向后端发送请求，并将结果显示在答案框中
+		var xhr = new XMLHttpRequest();
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === XMLHttpRequest.DONE) {
+				if (xhr.status === 200) {
+					var response = JSON.parse(xhr.responseText);
+					document.getElementById("answer").innerHTML = response.answer;
+				} else {
+					document.getElementById("answer").innerHTML = "出错了，请稍后再试。";
+				}
+			}
+		};
+		xhr.open("POST", "/api/qa/");
+		xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+		xhr.send(JSON.stringify({ "query": query }));
+	}
+</script>
+</body>
+</html>

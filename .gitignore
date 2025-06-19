@@ -1,0 +1,20 @@
+# 忽略所有文件
+*
+
+# 排除规则：保留需要的文件/目录
+!/.gitignore
+!/manage.py
+!/medKG/
+!/templates/
+
+# 允许保留目录内的所有内容（递归）
+!/medKG/**
+!/templates/**
+
+# 强制保留空目录（防止 Git 忽略空文件夹）
+!.gitkeep
+
+# 其他系统/IDE 文件（可选忽略）
+.DS_Store
+.idea/
+.vscode/

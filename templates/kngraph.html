@@ -1,0 +1,192 @@
+{#<!DOCTYPE html>#}
+{#<html>#}
+{#<head>#}
+{#    <meta charset="utf-8">#}
+{#    <title>菜品知识图谱可视化</title>#}
+{#    <script src="https://cdn.jsdelivr.net/npm/neovis.js@2.0.2/dist/neovis.js"></script>#}
+{#</head>#}
+{#<body>#}
+{#    <h2>菜品知识图谱</h2>#}
+{#    <div id="viz" style="width: 100%; height: 800px; border: 1px solid #ccc;"></div>#}
+{##}
+{#    <script>#}
+{#        const config = {#}
+{#            containerId: "viz",#}
+{#            neo4j: {#}
+{#                serverUrl: "bolt://localhost:7687",#}
+{#                serverUser: "neo4j",#}
+{#                serverPassword: "zzk011205"#}
+{#            },#}
+{#            labels: {#}
+{#                "Dish": {#}
+{#                    label: "name",#}
+{#                    value: "nutrition_index",#}
+{#                    caption: "name"#}
+{#                },#}
+{#                "Ingredient": {#}
+{#                    label: "name",#}
+{#                    caption: "name"#}
+{#                },#}
+{#                "Nutrient": {#}
+{#                    label: "type",#}
+{#                    caption: "type"#}
+{#                }#}
+{#            },#}
+{#            relationships: {#}
+{#                "INCLUDES": {#}
+{#                    caption: false#}
+{#                },#}
+{#                "CONTAINS": {#}
+{#                    caption: "value"#}
+{#                }#}
+{#            },#}
+{#            initialCypher: `#}
+{#                MATCH (d:Dish)-[r1:INCLUDES]->(i:Ingredient)#}
+{#                OPTIONAL MATCH (i)-[r2:CONTAINS]->(n:Nutrient)#}
+{#                RETURN d, r1, i, r2, n#}
+{#            `#}
+{#        };#}
+{##}
+{#        const viz = new NeoVis.default(config);#}
+{#        viz.render();#}
+{#    </script>#}
+{#</body>#}
+{#</html>#}
+
+
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <title>矩阵矩组矩图显示</title>
+  <script src="https://cdn.jsdelivr.net/npm/neovis.js@2.0.2/dist/neovis.js"></script>
+  <style>
+    body {
+      background-color: #2e2e2e;
+      margin: 0;
+      font-family: 'Microsoft YaHei', sans-serif;
+    }
+    #viz {
+      width: 100vw;
+      height: 100vh;
+    }
+  </style>
+</head>
+<body>
+  <div id="viz"></div>
+
+  <script>
+    const config = {
+      containerId: "viz",
+      neo4j: {
+        serverUrl: "bolt://localhost:7687",
+        serverUser: "neo4j",
+        serverPassword: "123"
+      },
+      labels: {
+        "菜品": {
+          label: "名称",
+          font: {
+            size: 24,
+            color: '#ffffff',
+            strokeWidth: 4
+          },
+          color: {
+            background: '#f58528',
+            border: '#f58528'
+          }
+        },
+        "食材": {
+          label: "名称",
+          font: {
+            size: 20,
+            color: '#ffffff'
+          },
+          color: {
+            background: '#2ec4b6',
+            border: '#2ec4b6'
+          }
+        },
+        "营养素": {
+          label: "类型",
+          font: {
+            size: 18,
+            color: '#ffffff'
+          },
+          color: {
+            background: '#3d5afe',
+            border: '#3d5afe'
+          }
+        },
+        "指数": {
+          label: "名称",
+          font: {
+            size: 18,
+            color: '#ffffff'
+          },
+          color: {
+            background: '#c51162',
+            border: '#c51162'
+          }
+        }
+      },
+      relationships: {
+        "包含": { value: 'INCLUDES' },
+        "含有营养素": {
+          label: "数值",
+          color: '#888888'
+        },
+        "减肥指数": {
+          label: "值",
+          color: '#ccff00'
+        },
+        "营养指数": {
+          label: "值",
+          color: '#ffd600'
+        },
+        "养颜指数": {
+          label: "值",
+          color: '#ff4081'
+        }
+      },
+      initialCypher: `
+        MATCH (d:菜品)-[r1]->(x)
+        OPTIONAL MATCH (x)-[r2]->(y)
+        RETURN d, r1, x, r2, y
+      `,
+      visConfig: {
+        nodes: {
+          shape: 'ellipse',
+          borderWidth: 2
+        },
+        edges: {
+          arrows: {
+            to: { enabled: true, scaleFactor: 0.5 }
+          },
+          font: {
+            size: 14,
+            align: 'middle',
+            color: '#ffffff'
+          },
+          color: '#999999'
+        },
+        layout: {
+          improvedLayout: true
+        },
+        physics: {
+          enabled: true,
+          barnesHut: {
+            gravitationalConstant: -30000,
+            springLength: 120,
+            springConstant: 0.04
+          },
+          solver: 'barnesHut'
+        }
+      }
+    };
+
+    const viz = new NeoVis.default(config);
+    viz.render();
+  </script>
+</body>
+</html>

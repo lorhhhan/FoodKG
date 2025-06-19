@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <meta charset="UTF-8">
+    <title>首页</title>
+	<style>
+        body {
+
+			background-color: var(--white);
+             /* 添加背景图片 */
+            background-image: url("https://th.bing.com/th/id/R.fd57e1f9c5bd20216397ca9a6e75391a?rik=YYCjWHrhSSCGsg&riu=http%3a%2f%2fimg.mp.itc.cn%2fupload%2f20160704%2f43f8117798624d9ca3b5e2ec66c417eb_th.jpg&ehk=LsDcAFlCLwExDq3kmcUhF%2bCtT%2f%2brnHlFbxdQq7p66Uw%3d&risl=1&pid=ImgRaw&r=0");
+            background-position: center center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: cover;
+
+			font-family: Arial, sans-serif;
+			font-size: 16px;
+			line-height: 1.5;
+			margin: 0;
+			padding: 0;
+
+		}
+        .container-fluid{
+            max-width: 1500px;
+            height: 210px;
+            background-color: var(--white);
+            position: absolute;
+            top: 40%;
+            left: 10%;
+            right: 30%;
+            transform: translate(0%, -50%);
+            border-radius: 8px;
+        }
+	</style>
+
+</head>
+<body>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+            <h3 class="text-center text-white">
+				  —
+			</h3>
+			 <a href="#" class="btn btn-block btn-lg btn-info active" type="button">demo</a>
+
+            <p class="fs-6 text-center text-muted">111</p>
+
+			<div class="row">
+				<div class="col-md-6">
+
+					<a href="{% url 'question' %}" class="btn btn-lg btn-warning btn-block">
+                    智能问答助手
+                    </a>
+				</div>
+				<div class="col-md-6">
+                    <a href="{% url 'kngraph' %}" class="btn btn-lg btn-primary btn-block">
+                    食品营养知识库
+                    </a>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+</body>
+</html>
