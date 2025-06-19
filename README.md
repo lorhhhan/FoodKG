@@ -1,3 +1,5 @@
+FOOD KNOWLEDGE GRAPH
+
 数据目录 data/
 包含构建图谱用的节点表、边表、食材词表等；
 
