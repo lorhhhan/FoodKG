@@ -1,19 +1,29 @@
+
 FOOD KNOWLEDGE GRAPH
 
-数据目录 data/
-包含构建图谱用的节点表、边表、食材词表等；
+This project implements a food and nutrition knowledge graph as part of the Intelligent Medical Service Platform. It integrates dish, ingredient, and nutrition information using a Neo4j graph database, enabling semantic-level queries and personalized health recommendations. 
+
+Directory Structure
+data/
+    Contains CSV files including node tables, edge tables, and food ingredient dictionaries used for building the knowledge graph.
 
 build_graph.py
-构建知识图谱，读取 CSV 文件，连接 Neo4j，构建食材、菜品、营养素节点及其之间的关系。
+    A Python script to build the knowledge graph. It reads structured CSV tables and populates the Neo4j graph database with dish, ingredient, and nutrition nodes and their relationships.
 
 views.py
-包含问答接口 /api/qa/、模糊匹配 /api/suggestions/、用户登录、图谱查询等逻辑。
+    Backend logic for the Django server. Implements RESTful APIs for question answering (/api/qa/), fuzzy matching (/api/suggestions/), user login, and graph data querying.
 
 templates/
-与 Django 配套使用的 HTML 页面，配合路由和视图完成前端展示。
+    HTML templates used with Django for frontend interface. Supports visualization and user interaction with the graph.
 
-运行：
-先运行build_graph.py构建知识图谱
-终端python manage.py runserver
-http://127.0.0.1:8000/main 进入页面
+Instructions to Run:
+1. Run `build_graph.py` to construct the knowledge graph.
+2. Launch the Django server using:
+       python manage.py runserver
+3. Open the web interface at:
+       http://127.0.0.1:8000/main
+
+The platform allows users to ask questions about dishes, ingredients, and nutrients, view associated data through interactive graph visualization, and receive health guidance based on structured knowledge.
+
+
 
